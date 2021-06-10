@@ -9,17 +9,17 @@ script:
   - docker run -e CI=true pozz/react-test npm test
 
 after_success:
-  - docker build -t pozz/multi-client ./client
-  - docker build -t pozz/multi-nginx ./nginx
-  - docker build -t pozz/multi-server ./server
-  - docker build -t pozz/multi-worker ./worker
+  - docker build -t apozzoli/multi-client ./client
+  - docker build -t apozzoli/multi-nginx ./nginx
+  - docker build -t apozzoli/multi-server ./server
+  - docker build -t apozzoli/multi-worker ./worker
   #Login to docker
   - echo $DOCKER_PASSWORD | docker login -u "$DOCKER_ID" --password-stdin
   #Push to Dockerhub
-  - docker push pozz/multi-client
-  - docker push pozz/multi-nginx  
-  - docker push pozz/multi-server
-  - docker push pozz/multi-worker
+  - docker push apozzoli/multi-client
+  - docker push apozzoli/multi-nginx  
+  - docker push apozzoli/multi-server
+  - docker push apozzoli/multi-worker
   
   
 
