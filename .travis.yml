@@ -1,0 +1,36 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t pozz/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true pozz/react-test npm test
+
+after_success:
+  - docker build -t pozz/multi-client ./client
+  - docker build -t pozz/multi-nginx ./nginx
+  - docker build -t pozz/multi-server ./server
+  - docker build -t pozz/multi-worker ./worker
+  #Login to docker
+  - echo $DOCKER_PASSWORD | docker login -u "$DOCKER_ID" --password-stdin
+  #Push to Dockerhub
+  - docker push pozz/multi-client
+  - docker push pozz/multi-nginx  
+  - docker push pozz/multi-server
+  - docker push pozz/multi-worker
+  
+  
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker"
+  env: "Docker-env"
+  bucket_name: "elasticbeanstalk-us-east-1-629365040131"
+  bucket_path: "docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
