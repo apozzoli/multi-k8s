@@ -9,7 +9,8 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img heigth="500" src={logo} className="App-logo" alt="logo" />
+          <h1>VERSIONE 3</h1>
           <Link to="/">Fibonacci Calculator</Link>
           <Link to = "/otherpage">Other Page</Link>
         </header>
